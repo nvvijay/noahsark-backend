@@ -95,5 +95,7 @@ addProfile = async (req, res) => {
 
 module.exports = {
 	"ping": ping,
-	"login": login
+	"login": login,
+	"getProfile": getProfile,
+	"addProfile": addProfile
 };
