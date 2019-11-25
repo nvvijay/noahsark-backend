@@ -29,39 +29,45 @@ login = async (req, res) => {
 		if ( results.rows[0].pass == req.body.pass ){
 			output["result"] = "success"
 			output["code"] = 200
-			const profile = await pool.query(getProfile, values)
+			const profile = await pool.query(getprofile, values)
 			output["profile"] = profile
 		} else {
 			output["result"] = "failure"
 			output["code"] = 400
 		}
-		console.log("output of query", output)
+		console.log("output of api", output)
 		res.send(output)
 		client.release()
 	} catch (err) {
 		console.error(err);
-		res.send("Error " + err);
+		output["result"] = "failure"
+		output["code"] = 400
+		output["message"] = err
+		res.send(output);
 	}
 }
 
 addProfile = async (req, res) => {
-	const addQuery = 'Insert into user_profile(name, age, phno, address, city, state, emergency, bloodgrp) values($1, $2, $3, $3, $4, $5, $6, $7, $8)'
+	const addQuery = 'insert into user_profile(name, age, phno, address, city, state, emergency, bloodgrp) values($1, $2, $3, $3, $4, $5, $6, $7, $8)'
 	const values = [req.body.name, req.body.age, req.body.phno, req.body.addr, req.body.city, req.body.state, req.body.emergency, req.body.bloodgrp]
 	console.log("trying to add profile with valuesL", values)
 	output = {}
 	try {
 		const client = await pool.connect()
-		const results = await pool.query(checklogin, values)
-
+		const results = await pool.query(addQuery, values)
+		console.log("result fo query:", results)
 		output["result"] = "success"
 		output["code"] = 200
 		
-		console.log("output of query:", output)
+		console.log("output of api:", output)
 		res.send(output)
 		client.release()
 	} catch (err) {
 		console.error(err);
-		res.send("Error " + err);
+		output["result"] = "failure"
+		output["code"] = 400
+		output["message"] = err
+		res.send(output);
 	}
 }
 module.exports = {
