@@ -26,11 +26,10 @@ login = async (req, res) => {
 	try {
 		const client = await pool.connect()
 		const results = await pool.query(checklogin, values)
-		console.log("got response:", results)
 		if ( results.rows[0].pass == req.body.pass ){
 			output["result"] = "success"
 			output["code"] = 200
-			const profile = await pool.query(text, values)
+			const profile = await pool.query(getProfile, values)
 			output["profile"] = profile
 		} else {
 			output["result"] = "failure"
