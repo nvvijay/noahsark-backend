@@ -3,7 +3,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.send(
+	  "<body><h1>PSQL service for Noah's Ark</h1><br><a href='#'> API Docs</a></body>"
+  );
 });
 
 module.exports = router;
