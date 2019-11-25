@@ -47,6 +47,28 @@ login = async (req, res) => {
 	}
 }
 
+getProfile = async (req, res) => {
+	const getprofile = 'SELECT * from user_profile WHERE user_profile.name=$1'
+	const values = [req.body.user]
+
+	output = {}
+	try {
+		const client = await pool.connect()
+		const results = await pool.query(getprofile, values)
+		output["result"] = "success"
+		output["code"] = 200
+		output["profile"] = results.rows
+		res.send(output)
+		client.release()
+	} catch (err) {
+		console.error(err);
+		output["result"] = "failure"
+		output["code"] = 400
+		output["message"] = err
+		res.send(output);
+	}
+}
+
 addProfile = async (req, res) => {
 	const addQuery = 'insert into user_profile(name, age, phno, address, city, state, emergency, bloodgrp) values($1, $2, $3, $3, $4, $5, $6, $7, $8)'
 	const values = [req.body.name, req.body.age, req.body.phno, req.body.addr, req.body.city, req.body.state, req.body.emergency, req.body.bloodgrp]
@@ -70,6 +92,7 @@ addProfile = async (req, res) => {
 		res.send(output);
 	}
 }
+
 module.exports = {
 	"ping": ping,
 	"login": login
