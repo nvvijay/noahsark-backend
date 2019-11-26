@@ -25,6 +25,7 @@ login = async (req, res) => {
 	try {
 		const client = await pool.connect()
 		const results = await pool.query(checklogin, values)
+		console.log("login reslut:", results)
 		if ( results.rows[0].pass == req.body.pass ){
 			output["result"] = "success"
 			output["code"] = 200
